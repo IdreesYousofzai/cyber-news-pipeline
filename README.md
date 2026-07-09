@@ -9,9 +9,6 @@ portfolio series.
 
 **Data flow:** `Scrape → Clean → Deduplicate → Store → Display`
 
-<img width="943" height="407" alt="image" src="https://github.com/user-attachments/assets/a135ee8b-69e9-49ed-9ca6-32e00df50313" />
-
-
 ---
 
 ## 1. Scraping ethics — research and decisions
@@ -204,3 +201,12 @@ CREATE TABLE articles (
     scraped_at  TEXT NOT NULL
 );
 ```
+
+## 8. Possible extensions
+
+- Add more feeds (BleepingComputer, Krebs on Security) and store
+  `source` per-feed so the dashboard can filter by source too.
+- Move scheduling to a proper cron job / systemd timer instead of a
+  long-running Python process.
+- Add sentiment or keyword-based tagging (e.g. auto-label "ransomware",
+  "data breach", "vulnerability") for extra dashboard filters.

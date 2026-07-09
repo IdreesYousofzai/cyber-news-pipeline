@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>cyber-news-pipeline // dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <div class="termbar">
+    <div>
+      <h1><span class="source">{{ source_name }}</span> <span class="mono" style="color:var(--muted); font-size:14px;">/ articles.db</span></h1>
+      <div class="prompt"><span class="cmd">tail -f</span> pipeline.log</div>
+    </div>
+    <div class="stats">
+      <span>TOTAL: <b>{{ total_count }}</b></span>
+      <span>LAST SYNC: <b>{{ last_sync[:19] if last_sync else 'never' }}</b></span>
+    </div>
+  </div>
+
+  <form class="filterbar" method="get">
+    <div class="field">
+      <label for="keyword">keyword</label>
+      <input type="text" id="keyword" name="keyword" placeholder="e.g. ransomware" value="{{ keyword }}">
+    </div>
+    <div class="field">
+      <label for="start_date">from</label>
+      <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+    </div>
+    <div class="field">
+      <label for="end_date">to</label>
+      <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+    </div>
+    <button type="submit">filter</button>
+    <a class="clear" href="{{ url_for('index') }}">clear</a>
+  </form>
+
+  <main>
+    <div class="rowcount mono">showing {{ shown_count }} of {{ total_count }} articles</div>
+
+    {% if articles %}
+    <table>
+      <thead>
+        <tr>
+          <th style="width:36px;">#</th>
+          <th style="width:110px;">date</th>
+          <th>headline</th>
+          <th class="hide-mobile">summary</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in articles %}
+        <tr>
+          <td class="idx">{{ "%03d"|format(loop.index) }}</td>
+          <td class="tag">{{ a.pub_date[:16] if a.pub_date else a.scraped_at[:10] }}</td>
+          <td class="headline"><a href="{{ a.url }}" target="_blank" rel="noopener">{{ a.headline }}</a></td>
+          <td class="summary">{{ a.summary }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+      <div class="big">no articles match this filter</div>
+      <div>run <span class="mono" style="color:var(--signal)">python pipeline.py</span> to scrape, or clear the filter above</div>
+    </div>
+    {% endif %}
+  </main>
+
+  <footer>
+    cyber-news-pipeline &mdash; scrape &rarr; clean &rarr; deduplicate &rarr; store &rarr; display
+  </footer>
+
+</body>
+</html>
