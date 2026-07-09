@@ -15,7 +15,7 @@ portfolio series.
 
 ---
 
-## 1. Scraping ethics — research and decisions
+## 1. Scraping ethics: research and decisions
 
 Before writing any code, I looked into what makes web scraping legal and
 ethical, and used that to choose the target for this project.
