@@ -137,7 +137,7 @@ cyber-news-pipeline/
 ## 4. Setup
 
 ```bash
-git clone <this-repo>
+git clone https://github.com/IdreesYousofzai/cyber-news-pipeline.git
 cd cyber-news-pipeline
 python -m venv venv
 source venv/bin/activate      # venv\Scripts\activate on Windows
